@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Login</title>
+
+<style>
+
+body{
+    font-family:Segoe UI,Arial;
+    background:linear-gradient(to right,#667eea,#764ba2);
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.box{
+    background:white;
+    width:350px;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+h2{
+    margin-bottom:25px;
+}
+
+.card{
+    background:linear-gradient(to right,#36d1dc,#5b86e5);
+    color:white;
+    padding:15px;
+    margin:15px 0;
+    border-radius:25px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.back{
+    display:block;
+    margin-top:20px;
+    text-decoration:none;
+    color:#5b86e5;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+<h2>Select Login Type</h2>
+
+<div class="card" onclick="goStudent()">
+🎓 Student Login
+</div>
+
+<div class="card" onclick="goAdmin()">
+⚙️ Admin Login
+</div>
+
+<a href="home.html" class="back">⬅ Back Home</a>
+
+</div>
+
+
+<script>
+
+function goStudent(){
+    window.location.href="login.html";
+}
+
+function goAdmin(){
+    window.location.href="admin_login.html";
+}
+
+</script>
+
+
+</body>
+</html>

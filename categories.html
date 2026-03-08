@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Categories</title>
+
+<style>
+
+body{font-family:Arial;background:#eee;}
+
+h1{text-align:center;}
+
+.container{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:30px;
+max-width:900px;
+margin:auto;
+padding:40px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+box-shadow:0 0 10px gray;
+text-align:center;
+padding:20px;
+cursor:pointer;
+}
+
+.card:hover{transform:scale(1.05);}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:10px;
+}
+
+a{text-decoration:none;color:black;}
+
+</style>
+</head>
+
+<body>
+
+<h1>Select Category</h1>
+
+<div class="container">
+
+<a href="cultural.html">
+<div class="card">
+<img src="cultural.jpg">
+<h2>Cultural</h2>
+</div>
+</a>
+
+<a href="sports.html">
+<div class="card">
+<img src="sports.jpg">
+<h2>Sports</h2>
+</div>
+</a>
+
+<a href="academic.html">
+<div class="card">
+<img src="academic.jpg">
+<h2>Academic</h2>
+</div>
+</a>
+
+<a href="technical.html">
+<div class="card">
+<img src="technical.jpg">
+<h2>Technical</h2>
+</div>
+</a>
+
+</div>
+
+</body>
+</html>

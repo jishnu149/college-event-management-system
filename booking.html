@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Event Registration</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f0f2f5;
+    margin:0;
+}
+
+.container{
+    max-width:450px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 12px gray;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+    font-size:15px;
+}
+
+button{
+    width:100%;
+    background:green;
+    color:white;
+    border:none;
+    padding:12px;
+    font-size:16px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkgreen;
+}
+
+.success{
+    text-align:center;
+    color:green;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h2>Event Registration</h2>
+
+<p><strong>Event:</strong> <span id="eventName"></span></p>
+
+<form onsubmit="saveData(event)">
+
+<input type="text" id="name" placeholder="Full Name" required>
+
+<input type="text" id="reg" placeholder="Register Number" required>
+
+<input type="email" id="email" placeholder="Email ID" required>
+
+<button type="submit">Confirm Registration</button>
+
+</form>
+
+<p id="msg" class="success"></p>
+
+</div>
+
+
+
+<script>
+
+/* Check Login */
+const user = JSON.parse(localStorage.getItem("loggedUser"));
+
+if(!user){
+    alert("Please login first!");
+    location.href="login.html";
+}
+
+
+/* Get Event */
+const params = new URLSearchParams(window.location.search);
+const eventName = params.get("event");
+
+document.getElementById("eventName").innerText = eventName;
+
+
+/* Auto Fill */
+document.getElementById("name").value = user.name;
+document.getElementById("reg").value = user.reg;
+document.getElementById("email").value = user.email;
+
+
+/* Save Booking */
+function saveData(e){
+
+    e.preventDefault();
+
+    const bookingData = {
+        reg: user.reg,
+        name: user.name,
+        email: user.email,
+        event: eventName,
+        time: new Date().toLocaleString()
+    };
+
+    fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+    })
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(response => {
+        if (response.status === 201) {
+            document.getElementById("msg").innerText = "✅ Registered Successfully!";
+            document.getElementById("msg").style.color = "green";
+        } else {
+            document.getElementById("msg").innerText = "❌ " + (response.body.error || "Failed to register!");
+            document.getElementById("msg").style.color = "red";
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        document.getElementById("msg").innerText = "❌ An error occurred during booking.";
+        document.getElementById("msg").style.color = "red";
+    });
+}
+
+</script>
+
+</body>
+</html>

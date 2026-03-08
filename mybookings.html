@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Bookings</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#eef2f7;
+}
+
+header{
+    background:#141e30;
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+
+table{
+    width:90%;
+    margin:30px auto;
+    border-collapse:collapse;
+    background:white;
+}
+
+th,td{
+    border:1px solid gray;
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#667eea;
+    color:white;
+}
+
+.back{
+    display:block;
+    width:150px;
+    margin:20px auto;
+    text-align:center;
+    background:green;
+    color:white;
+    padding:8px;
+    border-radius:5px;
+    text-decoration:none;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<header>
+<h2>My Registered Events</h2>
+</header>
+
+
+<table id="table">
+
+<tr>
+<th>Event</th>
+<th>Date</th>
+<th>Time</th>
+<th>Registered On</th>
+</tr>
+
+</table>
+
+
+<a href="home.html" class="back">⬅ Back Home</a>
+
+
+
+<script>
+
+/* Login Check */
+const user = JSON.parse(localStorage.getItem("loggedUser"));
+
+if(!user){
+    location.href="login.html";
+}
+
+
+/* Load Data */
+const table = document.getElementById("table");
+
+fetch('/api/bookings/' + user.reg)
+    .then(res => res.json())
+    .then(myData => {
+        if(myData.length === 0){
+            const row = table.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 4;
+            cell.innerText = "No bookings yet!";
+            cell.style.fontWeight="bold";
+            cell.style.padding="20px";
+        }
+        else{
+            myData.forEach(r => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = r.event;
+                row.insertCell(1).innerText = new Date(r.time).toLocaleDateString();
+                row.insertCell(2).innerText = "Refer Event Page";
+                row.insertCell(3).innerText = r.time;
+            });
+        }
+    })
+    .catch(err => {
+        console.error("Error fetching bookings:", err);
+        const row = table.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 4;
+        cell.innerText = "Error loading bookings.";
+        cell.style.color = "red";
+    });
+
+</script>
+
+</body>
+</html>

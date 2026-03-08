@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Academic Events</title>
+
+<style>
+
+body{font-family:Arial;background:#eee;}
+
+header{
+background:#222;
+color:white;
+text-align:center;
+padding:15px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+text-align:center;
+overflow:hidden;
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.btn{
+background:green;
+color:white;
+padding:7px 12px;
+text-decoration:none;
+border-radius:5px;
+display:inline-block;
+margin:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header><h1>Academic Events</h1></header>
+
+<div class="container">
+
+<div class="card">
+<a href="details.html?event=Student Workshop">
+<img src="stu.PNG">
+</a>
+<h3> Student Workshop</h3>
+<p>Feb 11</p>
+<a href="booking.html?event=Student Workshop" class="btn">Book</a>
+</div>
+
+
+<div class="card">
+<a href="details.html?event=Seminar on Sustainability goals">
+<img src="sus.png">
+</a>
+<h3>Seminar on Sustainability goals</h3>
+<p>Apr 16</p>
+<a href="booking.html?event=Seminar on Sustainability goals" class="btn">Book</a>
+</div>
+
+</div>
+
+</body>
+</html>

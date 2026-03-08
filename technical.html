@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Technical Events</title>
+
+<style>
+
+body{font-family:Arial;background:#eee;}
+
+header{
+background:#222;
+color:white;
+text-align:center;
+padding:15px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+text-align:center;
+overflow:hidden;
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.btn{
+background:green;
+color:white;
+padding:7px 12px;
+text-decoration:none;
+border-radius:5px;
+display:inline-block;
+margin:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header><h1>Technical Events</h1></header>
+
+<div class="container">
+
+<div class="card">
+<a href="details.html?event=DevsHouse">
+<img src="dev.png">
+</a>
+<h3> DevsHouse</h3>
+<p>Apr 11</p>
+<a href="booking.html?event=DevsHouse" class="btn">Book</a>
+</div>
+
+
+<div class="card">
+<a href="details.html?event=5G HACKATHON">
+<img src="co.png">
+</a>
+<h3>5G HACKATHON</h3>
+<p>Jan 2</p>
+<a href="booking.html?event=5G HACKATHON" class="btn">Book</a>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Event Registration</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f0f2f5;
+    margin:0;
+}
+
+.container{
+    max-width:450px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 12px gray;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+    font-size:15px;
+}
+
+button{
+    width:100%;
+    background:green;
+    color:white;
+    border:none;
+    padding:12px;
+    font-size:16px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkgreen;
+}
+
+.success{
+    text-align:center;
+    color:green;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h2>Event Registration</h2>
+
+<p><strong>Event:</strong> <span id="eventName"></span></p>
+
+<form onsubmit="saveData(event)">
+
+<input type="text" id="name" placeholder="Full Name" required>
+
+<input type="text" id="reg" placeholder="Register Number" required>
+
+<input type="email" id="email" placeholder="Email ID" required>
+
+<button type="submit">Confirm Registration</button>
+
+</form>
+
+<p id="msg" class="success"></p>
+
+</div>
+
+
+
+<script>
+
+/* Get Event Name */
+const params = new URLSearchParams(window.location.search);
+const eventName = params.get("event");
+
+document.getElementById("eventName").innerText = eventName;
+
+
+/* Save Registration */
+function saveData(e){
+
+    e.preventDefault();
+
+
+    const name = document.getElementById("name").value;
+    const reg = document.getElementById("reg").value;
+    const email = document.getElementById("email").value;
+
+
+    const booking = {
+        name:name,
+        reg:reg,
+        email:email,
+        event:eventName,
+        time:new Date().toLocaleString()
+    };
+
+
+    /* Get old data */
+    let records = localStorage.getItem("registrations");
+
+    if(records){
+        records = JSON.parse(records);
+    }
+    else{
+        records = [];
+    }
+
+
+    /* Add new */
+    records.push(booking);
+
+
+    /* Save again */
+    localStorage.setItem("registrations",JSON.stringify(records));
+
+
+    document.getElementById("msg").innerText =
+    "✅ Registration Successful!";
+
+
+    /* Clear Form */
+    document.querySelector("form").reset();
+}
+
+</script>
+
+</body>
+</html>

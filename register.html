@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Account</title>
+
+<style>
+
+body{
+    font-family:Segoe UI,Arial;
+    background:linear-gradient(to right,#43cea2,#185a9d);
+}
+
+.container{
+    max-width:420px;
+    margin:60px auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:100%;
+    background:linear-gradient(to right,#667eea,#764ba2);
+    color:white;
+    padding:10px;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+p{
+    text-align:center;
+    margin-top:15px;
+}
+
+a{
+    text-decoration:none;
+    color:#5b86e5;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Create Account</h2>
+
+<form onsubmit="register(event)">
+
+<input id="name" placeholder="Full Name" required>
+
+<input id="reg" placeholder="Register Number" required>
+
+<input id="email" type="email" placeholder="Email" required>
+
+<input id="phone" placeholder="Phone Number" required>
+
+<input id="pass" type="password" placeholder="Password" required>
+
+<input id="cpass" type="password" placeholder="Confirm Password" required>
+
+<button>Create Account</button>
+
+</form>
+
+<p>Already registered? <a href="login.html">Login</a></p>
+
+</div>
+
+
+<script>
+
+function register(e){
+
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const reg = document.getElementById("reg").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const pass = document.getElementById("pass").value.trim();
+    const cpass = document.getElementById("cpass").value.trim();
+
+    if(name===""||reg===""||email===""||phone===""||pass===""||cpass===""){
+        alert("All fields are required!");
+        return;
+    }
+
+    if(pass !== cpass){
+        alert("Passwords do not match!");
+        return;
+    }
+
+    const user = { name, reg, email, phone, pass };
+
+    fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    })
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(response => {
+        if (response.status === 201) {
+            alert("Account created successfully! Please login.");
+            location.href = "login.html";
+        } else {
+            alert(response.body.error || "Registration failed!");
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("An error occurred during registration.");
+    });
+}
+
+</script>
+
+</body>
+</html>

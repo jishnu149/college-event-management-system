@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+
+<meta charset="UTF-8">
+
+<style>
+
+body{
+    font-family:Segoe UI,Arial;
+    background:linear-gradient(to right,#667eea,#764ba2);
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.box{
+    background:white;
+    width:350px;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    text-align:center;
+}
+
+h2{margin-bottom:20px;}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:95%;
+    padding:10px;
+    background:linear-gradient(to right,#36d1dc,#5b86e5);
+    border:none;
+    color:white;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{transform:scale(1.05);}
+
+.link{
+    display:block;
+    margin-top:15px;
+    color:#5b86e5;
+    text-decoration:none;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="box">
+
+<h2>Student Login</h2>
+
+<input type="text" id="reg" placeholder="Register Number">
+
+<input type="password" id="pass" placeholder="Password">
+
+<button type="button" onclick="login()">Login</button>
+
+<a href="register.html" class="link">Create New Account</a>
+
+<a href="login_select.html" class="link">⬅ Back</a>
+
+</div>
+
+
+<script>
+
+function login(){
+
+    const reg = document.getElementById("reg").value.trim();
+    const pass = document.getElementById("pass").value.trim();
+
+    if(reg === "" || pass === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reg, pass })
+    })
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(response => {
+        if (response.status === 200) {
+            /* LOGIN SUCCESS */
+            localStorage.setItem("loggedUser", JSON.stringify(response.body.user));
+
+            /* Pending booking handling */
+            const pending = localStorage.getItem("pendingEvent");
+            if(pending){
+                localStorage.removeItem("pendingEvent");
+                window.location.href = "details.html?event=" + encodeURIComponent(pending);
+            }
+            else{
+                window.location.href = "home.html";
+            }
+        } else {
+            alert(response.body.error || "Login failed!");
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("An error occurred during login.");
+    });
+}
+
+</script>
+
+
+</body>
+</html>

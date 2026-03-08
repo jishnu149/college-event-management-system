@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VIT Event Portal</title>
+
+<meta charset="UTF-8">
+
+<style>
+
+/* ========== GENERAL ========== */
+
+body{
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin:0;
+    background:linear-gradient(to right,#eef2f3,#dfe9f3);
+    animation:fadeIn 1s ease;
+}
+/* SEARCH */
+
+.search-box{
+    margin:20px auto;
+    text-align:center;
+}
+
+.search-box input{
+    width:250px;
+    padding:10px;
+    border-radius:20px;
+    border:1px solid #ccc;
+    outline:none;
+}
+
+.search-box button{
+    padding:10px 15px;
+    border:none;
+    background:#5b86e5;
+    color:white;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.search-box button:hover{
+    opacity:0.9;
+}
+
+.results{
+    max-width:400px;
+    margin:15px auto;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 0 8px gray;
+    display:none;
+    animation:fadeIn 0.2s ease-in;
+}
+
+.result-item{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    cursor:pointer;
+
+    /* NEW */
+    color:#222;              /* Dark text */
+    font-weight:500;
+    background:white;
+}
+
+.result-item:hover{
+    background:#5b86e5;
+    color:white;             /* White on hover */
+}
+
+.result-item.no-result{
+    color:#777;
+    text-align:center;
+    cursor:default;
+}
+
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(-5px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+
+/* ========== TOP BAR ========== */
+
+#topbar{
+    background:linear-gradient(to right,#141e30,#243b55);
+    color:white;
+    padding:12px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 5px rgba(0,0,0,0.3);
+}
+
+#topbar span{
+    font-size:16px;
+}
+
+#topbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+    background:linear-gradient(to right,#43cea2,#185a9d);
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:14px;
+    transition:0.3s;
+}
+
+#topbar a:hover{
+    transform:scale(1.1);
+}
+
+
+/* ========== HERO SECTION ========== */
+
+header{
+    background:linear-gradient(to right,#667eea,#764ba2);
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+    animation:slideDown 1s ease;
+}
+
+@keyframes slideDown{
+    from{transform:translateY(-50px);opacity:0;}
+    to{transform:translateY(0);opacity:1;}
+}
+
+header h1{
+    font-size:42px;
+    margin:0;
+}
+
+header p{
+    font-size:18px;
+    margin-top:10px;
+}
+
+
+/* ========== DASHBOARD BUTTONS ========== */
+
+.dashboard{
+    text-align:center;
+    margin:25px 0;
+}
+
+.dashboard a{
+    display:inline-block;
+    margin:10px;
+    background:linear-gradient(to right,#ff758c,#ff7eb3);
+    color:white;
+    padding:10px 22px;
+    border-radius:25px;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.dashboard a:hover{
+    transform:translateY(-3px);
+}
+
+
+/* ========== CATEGORIES ========== */
+
+.section{
+    max-width:1100px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.section h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#333;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:25px;
+}
+
+
+/* Card */
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+    transition:0.4s;
+    animation:zoomIn 0.8s ease;
+}
+
+@keyframes zoomIn{
+    from{transform:scale(0.9);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.card img{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+}
+
+.card div{
+    padding:18px;
+    text-align:center;
+}
+
+.card h3{
+    margin:10px 0;
+}
+
+.card a{
+    display:inline-block;
+    background:linear-gradient(to right,#36d1dc,#5b86e5);
+    color:white;
+    padding:7px 16px;
+    border-radius:20px;
+    text-decoration:none;
+    margin-top:10px;
+    transition:0.3s;
+}
+
+.card a:hover{
+    opacity:0.9;
+}
+
+
+/* ========== FOOTER ========== */
+
+footer{
+    background:#141e30;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:40px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- TOP BAR -->
+
+
+<div id="topbar">
+
+<span id="userInfo">Guest</span>
+
+<div id="menu">
+
+<a href="profile.html" id="profileBtn" style="display:none;">Profile</a>
+
+<a href="mybookings.html" id="bookBtn" style="display:none;">My Bookings</a>
+
+<a href="admin.html" id="adminBtn" style="display:none;">Admin Panel</a>
+
+<a href="login_select.html" id="loginBtn">Login</a>
+
+<a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
+
+</div>
+
+</div>
+
+
+
+
+<!-- HERO -->
+<header>
+
+<h1>VIT Event Management Portal</h1>
+
+<p>Discover • Register • Participate • Excel</p>
+<div class="search-box">
+
+<input type="text" id="searchInput"
+onkeyup="searchEvent()"
+placeholder="Search events...">
+
+</div>
+
+<div id="searchResults" class="results"></div>
+
+
+</header>
+
+
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard" style="display:none;">
+
+<a href="mybookings.html">📋 My Bookings</a>
+
+<a href="admin.html">⚙ Admin Panel</a>
+
+</div>
+
+
+
+<!-- CATEGORIES -->
+<div class="section">
+
+<h2>Explore Events</h2>
+
+<div class="cards">
+
+
+<!-- Cultural -->
+<div class="card">
+
+<img src="cultural.jpg">
+
+<div>
+
+<h3>Cultural Events</h3>
+
+<p>Music, Dance, Drama & Arts</p>
+
+<a href="cultural.html">Explore</a>
+
+</div>
+
+</div>
+
+
+<!-- Sports -->
+<div class="card">
+
+<img src="sports.jpg">
+
+<div>
+
+<h3>Sports Events</h3>
+
+<p>Football, Cricket & Athletics</p>
+
+<a href="sports.html">Explore</a>
+
+</div>
+
+</div>
+
+
+<!-- Academic -->
+<div class="card">
+
+<img src="academic.jpg">
+
+<div>
+
+<h3>Academic Events</h3>
+
+<p>Workshops, Seminars & Talks</p>
+
+<a href="academic.html">Explore</a>
+
+</div>
+
+</div>
+
+
+<!-- Technical -->
+<div class="card">
+
+<img src="technical.jpg">
+
+<div>
+
+<h3>Technical Events</h3>
+
+<p>Hackathons, Coding & Dev</p>
+
+<a href="technical.html">Explore</a>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- FOOTER -->
+<footer>
+
+<p>© 2026 VIT Event Portal | Developed by Sree Jishnu</p>
+
+</footer>
+
+
+
+<script>
+/* EVENT DATABASE FOR SEARCH */
+
+const events = [
+
+"Vibrance",
+"Christmas",
+"FootBall Tournament",
+"Championship Trophy",
+"Student Workshop",
+"Seminar on Sustainability goals",
+"DevsHouse",
+"5G HACKATHON"
+
+];
+
+
+/* SEARCH FUNCTION */
+
+function searchEvent(){
+
+    const input =
+    document.getElementById("searchInput").value.toLowerCase();
+
+    const resultsBox =
+    document.getElementById("searchResults");
+
+    resultsBox.innerHTML = "";
+
+    if(input===""){
+        resultsBox.style.display="none";
+        return;
+    }
+
+    let found = false;
+
+    events.forEach(ev=>{
+
+        if(ev.toLowerCase().includes(input)){
+
+            found = true;
+
+            const div = document.createElement("div");
+
+            div.className = "result-item";
+
+            div.innerText = ev;
+
+            div.onclick = function(){
+
+                window.location.href =
+                "details.html?event=" + encodeURIComponent(ev);
+            };
+
+            resultsBox.appendChild(div);
+        }
+
+    });
+
+
+    if(found){
+        resultsBox.style.display="block";
+resultsBox.style.animation="none";
+resultsBox.offsetHeight;
+resultsBox.style.animation="fadeIn 0.3s ease-in";
+
+    }
+    else{
+        resultsBox.style.display="block";
+resultsBox.style.animation="none";
+resultsBox.offsetHeight;
+resultsBox.style.animation="fadeIn 0.3s ease-in";
+
+        resultsBox.innerHTML =
+"<div class='result-item no-result'>No events found</div>";
+
+    }
+
+}
+
+
+const user = JSON.parse(localStorage.getItem("loggedUser"));
+
+const userInfo = document.getElementById("userInfo");
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const profileBtn = document.getElementById("profileBtn");
+const bookBtn = document.getElementById("bookBtn");
+
+
+if(user){
+
+    userInfo.innerText = "Welcome " + (user.name || user.reg);
+
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline";
+    profileBtn.style.display = "inline";
+    bookBtn.style.display = "inline";
+
+
+    // Show admin button only for admin
+    if(user.role === "admin"){
+        adminBtn.style.display = "inline";
+    }
+    else{
+        adminBtn.style.display = "none";
+    }
+
+}
+else{
+
+    userInfo.innerText = "Guest";
+
+    loginBtn.style.display = "inline";
+    logoutBtn.style.display = "none";
+    profileBtn.style.display = "none";
+    bookBtn.style.display = "none";
+    adminBtn.style.display = "none";
+}
+
+/* LOGOUT */
+
+function logout(){
+
+    localStorage.removeItem("loggedUser");
+
+    location.reload();
+}
+
+</script>
+
+
+</body>
+</html>

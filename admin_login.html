@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Login</title>
+
+<style>
+
+body{
+    font-family:Segoe UI,Arial;
+    background:linear-gradient(to right,#141e30,#243b55);
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.box{
+    background:white;
+    width:350px;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:95%;
+    padding:10px;
+    background:#ff5f6d;
+    border:none;
+    color:white;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.link{
+    display:block;
+    margin-top:15px;
+    color:#5b86e5;
+    text-decoration:none;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+<h2>Admin Login</h2>
+
+<input type="text" id="adminId" placeholder="Admin ID">
+
+<input type="password" id="adminPass" placeholder="Password">
+
+<button type="button" onclick="adminLogin()">Login</button>
+
+<a href="login_select.html" class="link">⬅ Back</a>
+
+</div>
+
+
+<script>
+
+function adminLogin(){
+
+    const id = document.getElementById("adminId").value.trim();
+    const pass = document.getElementById("adminPass").value.trim();
+
+    fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, pass })
+    })
+    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+    .then(response => {
+        if (response.status === 200) {
+            localStorage.setItem("loggedUser", JSON.stringify(response.body.user));
+            window.location.href = "home.html";
+        } else {
+            alert(response.body.error || "Invalid Admin Credentials!");
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("An error occurred during admin login.");
+    });
+}
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Profile</title>
+
+<meta charset="UTF-8">
+
+<style>
+
+/* ===== GENERAL ===== */
+
+body{
+    margin:0;
+    font-family:Segoe UI,Arial;
+    background:linear-gradient(to right,#eef2f3,#dfe9f3);
+}
+
+
+/* ===== HEADER ===== */
+
+header{
+    background:linear-gradient(to right,#141e30,#243b55);
+    color:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header a{
+    color:white;
+    text-decoration:none;
+    background:#36d1dc;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:14px;
+}
+
+
+/* ===== BOX ===== */
+
+.box{
+    max-width:500px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    animation:fade 0.6s ease;
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+
+/* INPUT */
+
+label{
+    font-weight:bold;
+}
+
+input{
+    width:95%;
+    padding:10px;
+    margin:8px 0 15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:15px;
+}
+
+
+/* BUTTON */
+
+button{
+    width:100%;
+    padding:12px;
+    background:linear-gradient(to right,#667eea,#764ba2);
+    color:white;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+
+/* MESSAGE */
+
+.msg{
+    text-align:center;
+    margin-top:15px;
+    color:green;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+<h3>My Profile</h3>
+
+<a href="home.html">⬅ Home</a>
+
+</header>
+
+
+
+<div class="box">
+
+<h2 id="profileTitle">My Profile</h2>
+
+
+
+<label>Register Number</label>
+<input type="text" id="reg" disabled>
+
+
+<label>Name</label>
+<input type="text" id="name">
+
+
+<label>Email</label>
+<input type="email" id="email">
+
+
+<label>Phone</label>
+<input type="text" id="phone">
+
+
+<button onclick="save()">Save Changes</button>
+
+<p id="msg" class="msg"></p>
+
+</div>
+
+
+
+<script>
+
+/* LOGIN CHECK */
+
+let user = JSON.parse(localStorage.getItem("loggedUser"));
+
+if(!user){
+    location.href="login.html";
+}
+
+
+/* LOAD DATA */
+
+document.getElementById("reg").value = user.reg;
+document.getElementById("name").value = user.name || "";
+document.getElementById("email").value = user.email || "";
+document.getElementById("phone").value = user.phone || "";
+
+
+/* SAVE */
+
+function save(){
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+
+    if(name===""||email===""||phone===""){
+        alert("All fields are required");
+        return;
+    }
+
+
+    /* Update logged user */
+
+    user.name = name;
+    user.email = email;
+    user.phone = phone;
+
+    localStorage.setItem("loggedUser",JSON.stringify(user));
+
+
+    /* Update users database */
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const i = users.findIndex(u=>u.reg===user.reg);
+
+    if(i!==-1){
+        users[i] = user;
+        localStorage.setItem("users",JSON.stringify(users));
+    }
+
+
+    document.getElementById("msg").innerText =
+    "Profile Updated Successfully!";
+}
+
+</script>
+
+
+</body>
+</html>
