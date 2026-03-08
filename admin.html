@@ -1,119 +1,201 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Admin - Registrations</title>
+    <title>Admin - Registrations</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+        }
 
-<style>
+        h2 {
+            text-align: center;
+        }
 
-body{
-    font-family:Arial;
-    background:#f2f2f2;
-}
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+        }
 
-h2{
-    text-align:center;
-}
+        th,
+        td {
+            border: 1px solid gray;
+            padding: 10px;
+            text-align: center;
+        }
 
-table{
-    width:90%;
-    margin:auto;
-    border-collapse:collapse;
-    background:white;
-}
+        th {
+            background: #222;
+            color: white;
+        }
 
-th,td{
-    border:1px solid gray;
-    padding:10px;
-    text-align:center;
-}
+        button {
+            margin: 20px auto;
+            display: block;
+            padding: 10px 20px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-th{
-    background:#222;
-    color:white;
-}
-
-button{
-    margin:20px auto;
-    display:block;
-    padding:10px 20px;
-    background:red;
-    color:white;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:darkred;
-}
-
-</style>
+        button:hover {
+            background: darkred;
+        }
+    </style>
 </head>
 
 
 <body>
 
-<h2>All Event Registrations</h2>
+    <h2>All Event Registrations</h2>
 
-<table id="table">
+    <table id="table">
 
-<tr>
-<th>Name</th>
-<th>Register No</th>
-<th>Email</th>
-<th>Event</th>
-<th>Time</th>
-</tr>
+        <tr>
+            <th>Name</th>
+            <th>Register No</th>
+            <th>Email</th>
+            <th>Event</th>
+            <th>Time</th>
+        </tr>
 
-</table>
+    </table>
 
-<button onclick="clearData()">Clear All</button>
-
-
-
-<script>
-const user = JSON.parse(localStorage.getItem("loggedUser"));
-
-if(!user || user.role !== "admin"){
-    alert("Access Denied!");
-    location.href="index.html";
-}
+    <button onclick="clearData()">Clear All</button>
 
 
-const table = document.getElementById("table");
 
-/* Fetch all registrations */
-fetch('/api/admin/bookings')
-    .then(res => res.json())
-    .then(data => {
-        data.forEach(r => {
-            const row = table.insertRow();
-            row.insertCell(0).innerText = r.name;
-            row.insertCell(1).innerText = r.reg;
-            row.insertCell(2).innerText = r.email;
-            row.insertCell(3).innerText = r.event;
-            row.insertCell(4).innerText = r.time;
-        });
-    })
-    .catch(err => console.error("Error fetching admin bookings:", err));
+    <script>
+        const user = JSON.parse(localStorage.getItem("loggedUser"));
+
+        if (!user || user.role !== "admin") {
+            alert("Access Denied!");
+            location.href = "index.html";
+        }
 
 
-function clearData(){
-    if(confirm("Delete all records?")){
-        fetch('/api/admin/bookings', { method: 'DELETE' })
-            .then(res => res.json().then(data => ({ status: res.status, body: data })))
-            .then(response => {
-                if(response.status === 200) {
-                    location.reload();
-                } else {
-                    alert("Failed to clear records.");
-                }
+        const table = document.getElementById("table");
+
+        /* Fetch all registrations */
+        fetch('/api/admin/bookings')
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(r => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = r.name;
+                    row.insertCell(1).innerText = r.reg;
+                    row.insertCell(2).innerText = r.email;
+                    row.insertCell(3).innerText = r.event;
+                    row.insertCell(4).innerText = r.time;
+                });
+                drawEventChart(data);
             })
-            .catch(err => console.error("Error clearing data:", err));
-    }
-}
+            .catch(err => console.error("Error fetching admin bookings:", err));
 
-</script>
+
+        function clearData() {
+            if (confirm("Delete all records?")) {
+                fetch('/api/admin/bookings', { method: 'DELETE' })
+                    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                    .then(response => {
+                        if (response.status === 200) {
+                            location.reload();
+                        } else {
+                            alert("Failed to clear records.");
+                        }
+                    })
+                    .catch(err => console.error("Error clearing data:", err));
+            }
+        }
+
+
+        function drawEventChart(bookings) {
+
+            const canvas = document.getElementById("eventChart");
+            const ctx = canvas.getContext("2d");
+
+            let eventCounts = {};
+
+            bookings.forEach(b => {
+                eventCounts[b.event] = (eventCounts[b.event] || 0) + 1;
+            });
+
+            const events = Object.keys(eventCounts);
+            const counts = Object.values(eventCounts);
+
+            const barWidth = 80;
+            const gap = 70;
+
+            let progress = 0;
+
+            function animate() {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw axis
+                ctx.beginPath();
+                ctx.moveTo(40, canvas.height - 40);
+                ctx.lineTo(canvas.width - 20, canvas.height - 40);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+
+                events.forEach((event, i) => {
+
+                    const x = 80 + i * (barWidth + gap);
+                    const targetHeight = counts[i] * 40;
+                    const animatedHeight = targetHeight * progress;
+
+                    // Bar
+                    ctx.fillStyle = "#4CAF50";
+                    ctx.fillRect(
+                        x,
+                        canvas.height - animatedHeight - 40,
+                        barWidth,
+                        animatedHeight
+                    );
+
+                    ctx.fillStyle = "black";
+                    ctx.textAlign = "center";
+                    ctx.font = "14px Arial";
+
+                    // Students text above bar
+                    ctx.fillText(
+                        counts[i] + " students",
+                        x + barWidth / 2,
+                        canvas.height - animatedHeight - 50
+                    );
+
+                    // Event name below bar
+                    ctx.fillText(
+                        event,
+                        x + barWidth / 2,
+                        canvas.height - 15
+                    );
+
+                });
+
+                if (progress < 1) {
+                    progress += 0.002;   // slower animation
+                    requestAnimationFrame(animate);
+                }
+
+            }
+
+            animate();
+        }
+
+    </script>
+    <h2 style="text-align:center;">Event Popularity</h2>
+
+    <canvas id="eventChart" width="1500" height="550"
+        style="display:block;margin:30px auto;background:#faf9f9;border:1px solid #ccc;border-radius:10px;">
+    </canvas>
 
 </body>
+
 </html>
