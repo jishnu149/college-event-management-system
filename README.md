@@ -11,9 +11,7 @@
   <b>A full-stack web application to manage and book college events — built with Flask, MySQL, and vanilla HTML/CSS/JS.</b>
 </p>
 
-<p align="center">
-  🌐 <a href="https://college-event-management-system-f5o3.onrender.com/home.html"><strong>Live Demo → college-event-management-system-f5o3.onrender.com</strong></a>
-</p>
+
 
 ---
 
