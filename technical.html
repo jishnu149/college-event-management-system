@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Technical Events</title>
+<style>
+body{font-family:Arial;background:#eee;}
+header{background:#222;color:white;text-align:center;padding:15px;}
+.container{max-width:1000px;margin:auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.card{background:white;border-radius:10px;box-shadow:0 0 10px gray;text-align:center;overflow:hidden;}
+.card img{width:100%;height:180px;object-fit:cover;}
+.btn{background:green;color:white;padding:7px 12px;text-decoration:none;border-radius:5px;display:inline-block;margin:10px;border:none;font-size:14px;cursor:pointer;}
+.btn:hover{background:darkgreen;}
+.btn-disabled{background:gray;color:white;padding:7px 12px;border-radius:5px;display:inline-block;margin:10px;border:none;font-size:14px;cursor:not-allowed;}
+.badge-past{background:#f8d7da;color:#721c24;font-size:12px;padding:3px 8px;border-radius:10px;display:inline-block;margin-bottom:5px;}
+.badge-upcoming{background:#d4edda;color:#155724;font-size:12px;padding:3px 8px;border-radius:10px;display:inline-block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+<header><h1>Technical Events</h1></header>
+<div class="container" id="eventsContainer"></div>
+
+<script>
+const events = [
+  { name: "DevsHouse",    img: "dev.png", date: "2026-03-25", display: "Mar 25" },
+  { name: "5G HACKATHON", img: "co.png",  date: "2026-01-02", display: "Jan 02" }
+];
+
+const container = document.getElementById("eventsContainer");
+const today     = new Date();
+today.setHours(0, 0, 0, 0);
+
+events.forEach(ev => {
+  const eventDate = new Date(ev.date);
+  const isPast    = eventDate < today;
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const badge = isPast
+    ? `<span class="badge-past">🔴 Completed</span>`
+    : `<span class="badge-upcoming">🟢 Upcoming</span>`;
+
+  const bookBtn = isPast
+    ? `<span class="btn-disabled">Booking Closed</span>`
+    : `<a href="booking.html?event=${encodeURIComponent(ev.name)}" class="btn">Book</a>`;
+
+  card.innerHTML = `
+    <a href="details.html?event=${encodeURIComponent(ev.name)}">
+      <img src="${ev.img}" alt="${ev.name}" onerror="this.src='https://via.placeholder.com/300x180?text=Event'">
+    </a>
+    <h3>${ev.name}</h3>
+    <p>${ev.display}</p>
+    ${badge}
+    <br>
+    ${bookBtn}
+  `;
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>

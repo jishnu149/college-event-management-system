@@ -1,0 +1,22 @@
+# render.yaml — Render deployment blueprint
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: college-event-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: MYSQL_HOST
+        sync: false          # Set manually in Render dashboard
+      - key: MYSQL_PORT
+        value: "3306"
+      - key: MYSQL_USER
+        sync: false
+      - key: MYSQL_PASSWORD
+        sync: false
+      - key: MYSQL_DATABASE
+        value: college_events
+      - key: PORT
+        value: "10000"
