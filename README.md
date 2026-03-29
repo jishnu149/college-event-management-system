@@ -11,7 +11,9 @@
   <b>A full-stack web application to manage and book college events — built with Flask, MySQL, and vanilla HTML/CSS/JS.</b>
 </p>
 
+## 🌐 Live Project
 
+> **🔗 [https://college-event-management-system-f5o3.onrender.com/home.html](https://college-event-management-system-f5o3.onrender.com/home.html)**
 
 ---
 
@@ -149,15 +151,3 @@ http://localhost:3000/home.html
 | Password | `admin123` |
 
 ---
-
-## 🌐 Live Project
-
-> **🔗 [https://college-event-management-system-f5o3.onrender.com/home.html](https://college-event-management-system-f5o3.onrender.com/home.html)**
-
----
-
-## 👨‍💻 Developer
-
-Made with ❤️ by **Jishnu**
-
-[![GitHub](https://img.shields.io/badge/GitHub-jishnu149-black?style=flat-square&logo=github)](https://github.com/jishnu149)
