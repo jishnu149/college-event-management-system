@@ -15,6 +15,9 @@
 ## 🌐 Live Project
 
 > **🔗 [https://college-event-management-system-f5o3.onrender.com/home.html](https://college-event-management-system-f5o3.onrender.com/home.html)**
+>
+> Live database viewer
+>  https://college-event-management-system-f5o3.onrender.com/livedata.html
 > </center>
 </p>
 ---
